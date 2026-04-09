@@ -54,13 +54,39 @@ The command asks you to name the output directory (e.g., `tropes-violations`) an
 
 ## Example output
 
-The `examples/tropes-violations/` directory contains the full output from a real audit: 201 slices, 809 files inspected, 220 output files. Browse it to see exactly what the tool produces.
+Two real audits are included in `examples/`.
+
+### Type-safety improvements (249 slices, 1,834 files)
+
+A code quality audit that started as a short bullet list and expanded into a full codebase-wide type-safety remediation plan.
+
+Original prompt:
+```
+/fan-out-audit help me find opportunities for type-safety improvements in my codebase, such as
+- leveraging client sdk types instead of defining our own custom types (e.g. for linear/sdk, googleapis, slack/web-api, etc)
+- avoiding type-casting
+- finding eslint rules and tsconfig changes that enforce a higher standard for typescript
+- avoiding "any" or "unknown" types
+- avoiding weakening to Record<string,...> types instead of keeping objects as constants, or keying by a stricter type
+- de-duping types
+```
+
+Key files:
+- [`TASK.md`](examples/type-safety-improvements/TASK.md) - Original prompt + expanded agent brief
+- [`SYNTHESIS.md`](examples/type-safety-improvements/SYNTHESIS.md) - Top 10 findings ranked by impact × prevalence (e.g. 30 untyped Drizzle JSONB columns causing 100+ downstream casts; single `BaseSyncService` generic eliminates 30–45 casts across 15 integration files)
+- [`phase1/apps-api-src-integrations-6.md`](examples/type-safety-improvements/phase1/apps-api-src-integrations-6.md) - Example slice with specific line-number findings
+- [`phase2/group-6.md`](examples/type-safety-improvements/phase2/group-6.md) - Cross-cutting patterns across the integrations layer
+- [`orchestration/`](examples/type-safety-improvements/orchestration/) - 9-PR remediation plan generated from the synthesis (what to do next)
+
+### Tropes violations (201 slices, 809 files)
+
+A copy/tone audit checking all user-facing text against an AI writing tropes reference.
 
 Key files:
 - [`SYNTHESIS.md`](examples/tropes-violations/SYNTHESIS.md) - Final ranked summary
 - [`phase1/apps-app-src-components-billing-3.md`](examples/tropes-violations/phase1/apps-app-src-components-billing-3.md) - Example slice with detailed findings (stock SaaS billing copy)
 - [`phase1/apps-marketing-src-app.md`](examples/tropes-violations/phase1/apps-marketing-src-app.md) - Example clean slice (no findings, agent explains what it checked)
-- [`phase2/group-6.md`](examples/tropes-violations/phase2/group-6.md) - Example cross-cutting patterns ("learning your patterns" used 9 times across 7 slices)
+- [`phase2/group-6.md`](examples/tropes-violations/phase2/group-6.md) - Cross-cutting patterns ("learning your patterns" used 9 times across 7 slices)
 
 ## Configuration
 
